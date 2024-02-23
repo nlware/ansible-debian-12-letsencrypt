@@ -1,0 +1,15 @@
+{{ ansible_managed | comment }}
+
+Alias /{{ debian_12_letsencrypt_acme_challenge_path }}/ "{{ debian_12_letsencrypt_webroot_path }}/{{ debian_12_letsencrypt_acme_challenge_path }}/"
+<Directory "{{ debian_12_letsencrypt_webroot_path }}/{{ debian_12_letsencrypt_acme_challenge_path }}/">
+
+{% if debian_12_letsencrypt_acme_challenge_forward_host is defined %}
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} .
+  RewriteCond %{HTTP_HOST} !^{{ ansible_host }}$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ https://{{ debian_12_letsencrypt_acme_challenge_forward_host }}/{{ debian_12_letsencrypt_acme_challenge_path }}/$1 [R=302,L]
+{% endif %}
+
+  Require all granted
+</Directory>

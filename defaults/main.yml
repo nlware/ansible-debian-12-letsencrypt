@@ -1,0 +1,9 @@
+# defaults file for debian-12-letsencrypt
+---
+debian_12_letsencrypt_authenticator: standalone
+
+debian_12_letsencrypt_certificates_present: []
+
+debian_12_letsencrypt_certificates_absent: []
+
+debian_12_letsencrypt_webroot_path: '/var/lib/certbot/http_challenges'

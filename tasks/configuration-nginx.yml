@@ -1,0 +1,7 @@
+# tasks file for debian-12-letsencrypt
+---
+- name: configuration-nginx | copy snippet file
+  ansible.builtin.template:
+    src: "{{ debian_12_letsencrypt_nginx_snippet_file.lstrip('/') }}.j2"
+    dest: "{{ debian_12_letsencrypt_nginx_snippet_file }}"
+    mode: '644'

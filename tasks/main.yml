@@ -1,0 +1,11 @@
+# tasks file for debian-12-letsencrypt
+---
+
+- name: install
+  ansible.builtin.import_tasks: install.yml
+
+- name: configuration
+  ansible.builtin.import_tasks: configuration.yml
+
+- name: certificates
+  ansible.builtin.import_tasks: certificates.yml
