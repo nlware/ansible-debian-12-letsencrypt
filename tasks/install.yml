@@ -1,0 +1,5 @@
+# tasks file for debian-12-letsencrypt
+---
+- name: install | certbot
+  ansible.builtin.apt:
+    name: certbot

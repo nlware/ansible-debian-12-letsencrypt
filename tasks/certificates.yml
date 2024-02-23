@@ -1,0 +1,18 @@
+# tasks file for debian-12-letsencrypt
+---
+- name: configuration | request host certificate
+  ansible.builtin.command: "certbot certonly --cert-name {{ ansible_host }} -d {{ ansible_host }}"
+  register: debian_12_letsencrypt_configure_request_host_certificate
+  changed_when: "'no action taken' not in debian_12_letsencrypt_configure_request_host_certificate.stdout"
+
+- name: configuration | request additional certificates
+  ansible.builtin.command: "certbot certonly --cert-name {{ item.name | default(item.domains | first) }} -d {{ item.domains | join(' -d ') }}"
+  register: _debian_12_letsencrypt_configure_request_additional_certificates
+  changed_when: "'no action taken' not in _debian_12_letsencrypt_configure_request_additional_certificates.stdout"
+  with_items: "{{ debian_12_letsencrypt_certificates_present }}"
+
+- name: configuration | remove additional certificates
+  ansible.builtin.command: "certbot delete --cert-name {{ item.name | default(item.domains | first) }}"
+  args:
+    removes: "/etc/letsencrypt/renewal/{{ item.name | default(item.domains | first) }}.conf"
+  with_items: "{{ debian_12_letsencrypt_certificates_absent }}"

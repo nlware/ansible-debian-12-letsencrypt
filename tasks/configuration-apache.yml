@@ -1,0 +1,20 @@
+# tasks file for debian-12-letsencrypt
+---
+- name: configuration-apache | copy alias configuration file
+  ansible.builtin.template:
+    src: etc/apache2/conf-available/letsencrypt.conf.j2
+    dest: "/etc/apache2/conf-available/letsencrypt.conf"
+    mode: '644'
+  register: _copy_alias_configuration_file
+
+- name: configuration-apache | enable alias configuration
+  ansible.builtin.command: a2enconf letsencrypt
+  args:
+    creates: "/etc/apache2/conf-enabled/letsencrypt.conf"
+  register: _enable_alias_configuration
+
+- name: configuration-apache | reload apache2
+  ansible.builtin.service:
+    name: apache2
+    state: reloaded
+  when: _copy_alias_configuration_file is changed or _enable_alias_configuration is changed  # noqa 503

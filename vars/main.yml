@@ -1,0 +1,7 @@
+# vars file for debian-12-letsencrypt
+---
+debian_12_letsencrypt_acme_challenge_path: '.well-known/acme-challenge'
+
+debian_12_letsencrypt_configuration_file: '/etc/letsencrypt/cli.ini'
+
+debian_12_letsencrypt_nginx_snippet_file: '/etc/nginx/snippets/letsencrypt.conf'

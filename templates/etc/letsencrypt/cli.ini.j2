@@ -1,0 +1,35 @@
+{{ ansible_managed | comment }}
+
+# Because we are using logrotate for greater flexibility, disable the
+# internal certbot logrotation.
+max-log-backups = 0
+# Adjust interactive output regarding automated renewal
+preconfigured-renewal = True
+
+{% if debian_12_letsencrypt_admin_email %}
+email = {{ debian_12_letsencrypt_admin_email }}
+{% endif %}
+
+authenticator = {{ debian_12_letsencrypt_authenticator }}
+
+{% if debian_12_letsencrypt_http_01_port is defined %}
+http-01-port = {{ debian_12_letsencrypt_http_01_port }}
+{% endif %}
+
+{% if debian_12_letsencrypt_http_01_address is defined %}
+http-01-address = {{ debian_12_letsencrypt_http_01_address }}
+{% endif %}
+
+{% if debian_12_letsencrypt_webroot_path is defined %}
+webroot-path = {{ debian_12_letsencrypt_webroot_path }}
+{% endif %}
+
+{% if debian_12_letsencrypt_deploy_hook is defined %}
+deploy-hook = {{ debian_12_letsencrypt_deploy_hook }}
+{% endif %}
+
+agree-tos = True
+
+keep-until-expiring = True
+expand = True
+non-interactive = True

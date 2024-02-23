@@ -1,0 +1,21 @@
+# tasks file for debian-12-letsencrypt
+---
+- name: configuration | copy configuration file
+  ansible.builtin.template:
+    src: "{{ debian_12_letsencrypt_configuration_file.lstrip('/') }}.j2"
+    dest: "{{ debian_12_letsencrypt_configuration_file }}"
+    mode: '644'
+
+- name: configuration | create acme challenges directory
+  ansible.builtin.file:
+    path: "{{ debian_12_letsencrypt_webroot_path }}/{{ debian_12_letsencrypt_acme_challenge_path }}"
+    state: directory
+    mode: '755'
+
+- name: configuration apache
+  ansible.builtin.import_tasks: configuration-apache.yml
+  when: debian_12_letsencrypt_webroot_webserver is defined and debian_12_letsencrypt_webroot_webserver == 'apache'  # noqa 503
+
+- name: configuration nginx
+  ansible.builtin.import_tasks: configuration-nginx.yml
+  when: debian_12_letsencrypt_webroot_webserver is defined and debian_12_letsencrypt_webroot_webserver == 'nginx'  # noqa 503

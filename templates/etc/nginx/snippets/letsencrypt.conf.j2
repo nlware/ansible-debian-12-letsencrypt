@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+
+location ^~ /{{ debian_12_letsencrypt_acme_challenge_path }}/ {
+  default_type "text/plain";
+
+  root {{ debian_12_letsencrypt_webroot_path }};
+
+  try_files $uri @missing;
+}
+
+location @missing {
+  if ($host != '{{ ansible_host }}') {
+    return 302 https://{{ debian_12_letsencrypt_acme_challenge_forward_host }}$request_uri;
+  }
+}
+
+location = /{{ debian_12_letsencrypt_acme_challenge_path }}/ {
+  return 404;
+}
